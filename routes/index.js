@@ -1,13 +1,12 @@
-const express = require('express')
+var express = require('express')
+var router = express.Router()
 
-const router = express.Router()
+router.get('/', function (req, res, next) {
+    res.render('index')
+})
 
-/* GET home page. */
-router.get('/', (req, res, next) => {
-    //res.render('index', { title: 'Express', words: ['EJS', 'is', '<span style="font-weight: bold">awesome</span>']  })
-    res.render('index', { title: 'Express',
-        content: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
-    })
+router.get('/addList', function (req, res, next) {
+    res.render('addList')
 })
 
 module.exports = router

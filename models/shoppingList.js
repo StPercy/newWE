@@ -6,8 +6,7 @@ const shoppingListSchema = new Schema({
         required: true,
         immutable: true,
         validate: {
-            validator: (value) => Number.isInteger(Number(value)) 
-            //&& value.length === 6,
+            validator: (value) => Number.isInteger(Number(value)) && value.length === 6,
         },
     },
     entries: [

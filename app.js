@@ -12,6 +12,8 @@ const apiRouter = require('./routes/api/shoppingLists')
 
 const app = express()
 
+app.locals.root = __dirname
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'ejs')

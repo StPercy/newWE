@@ -8,6 +8,7 @@ router.get('/:id', async (req, res) => {
     const { id } = req.params
 
     const shoppingList = await shoppingListForId(id, true)
+
     if (!shoppingList) {
         res.status(404).json({ error: 'The id does not exist.' })
         return
@@ -22,6 +23,7 @@ router.post('/', async (req, res) => {
     const { id, list } = req.body
 
     let shoppingList = await shoppingListForId(id)
+
     if (shoppingList) {
         res.status(409).json({ error: 'The id is already taken.' })
         return
@@ -34,6 +36,7 @@ router.post('/', async (req, res) => {
     }
 
     const newEntriesIds = await createEntries(list)
+
     if (newEntriesIds.length === 0) {
         await ShoppingList.deleteOne({ userId: id })
         res.status(400).json({ error: 'The shopping list must contain items.' })
@@ -99,7 +102,7 @@ router.delete('/:id/:entryName', async (req, res) => {
         return
     }
 
-    const entryId = shoppingList.entries.filter(({ ding }) => ding === entryName.toLowerCase())[0]?.id
+    const entryId = shoppingList.entries.filter(({ food }) => food === entryName.toLowerCase())[0]?.id
 
     if (!entryId) {
         res.status(404).json({ error: 'The element does not exist.' })
@@ -111,7 +114,7 @@ router.delete('/:id/:entryName', async (req, res) => {
 
     res.status(204).json()
 })
-//Helper functions
+
 async function shoppingListForId(id, withDependancies = false) {
     const shoppingList = await ShoppingList.findOne({ userId: id })
 
@@ -134,7 +137,7 @@ async function createEntries(list) {
 
     try {
         for (const element of list.split(',').map((elem) => elem.trim())) {
-            const entry = await ShoppingListEntry.create({ ding: element })
+            const entry = await ShoppingListEntry.create({ food: element })
             entries.push(entry._id)
         }
     } catch ({ message }) {
@@ -150,7 +153,7 @@ async function addEntriesToShoppingList(entriyIds, shoppinglist) {
 }
 
 function shortenEntries(entries) {
-    return entries.map((entry) => (entry = { ding: entry.ding, createdAt: entry.createdAt }))
+    return entries.map((entry) => (entry = { food: entry.food, createdAt: entry.createdAt }))
 }
 
 async function resetEntriesOfList(shoppingList) {

@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const shoppingListEntrySchema = Schema({
-    ding: {
+    food: {
         type: String,
         lowercase: true,
         required: true,

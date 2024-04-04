@@ -88,5 +88,5 @@ function onListening() {
   if (typeof addr !== 'string') {
     debug(`http://localhost:${addr.port}`);
   }
-  console.log(`Server listening on port ${addr.port}`);
+  console.log(`API Server listening on port ${addr.port} 🛸`);
 }

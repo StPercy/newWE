@@ -8,6 +8,7 @@ function init() {
         xButtons.forEach((button) => button.addEventListener('click', deleteEntry))
     }
     registerLogoutHandler()
+    deactivateTemplate()
 }
 
 async function deleteList(e) {
@@ -47,5 +48,8 @@ function getListId(target) {
     }
     return getListId(target.parentElement)
 }
-
+function deactivateTemplate() {
+    const template = document.getElementById('socketTemplate')
+    template.style.display = 'none'
+}
 init()

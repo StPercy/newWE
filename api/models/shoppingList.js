@@ -9,6 +9,10 @@ const shoppingListSchema = new Schema({
             validator: (value) => Number.isInteger(Number(value)) && value.length === 6,
         },
     },
+    name: {
+        type: String,
+        required: true,
+    },
     entries: [
         {
             type: SchemaTypes.ObjectId,
@@ -25,11 +29,13 @@ shoppingListSchema.pre('deleteOne', { document: true, query: false }, async func
 })
 
 shoppingListSchema.pre(['deleteOne', 'remove'], { document: true, query: false }, async function (next) {
-    const user = await model('User').findOne({ lists: { $elemMatch: { $eq: this._id } } })
-    const newLists = user.lists.filter((objectIdObj) => objectIdObj.toHexString() !== this.id)
+    const users = await model('User').find({ lists: { $elemMatch: { $eq: this._id } } })
+    for (const user of users) {
+        const newLists = user.lists.filter((objectIdObj) => objectIdObj.toHexString() !== this.id)
 
-    user.lists = newLists
-    await user.save()
+        user.lists = newLists
+        await user.save()
+    }
 
     next()
 })
